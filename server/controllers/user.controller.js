@@ -60,12 +60,14 @@ module.exports = {
           let payload = {
             id: data.id,
             email: data.email,
+            name: data.name,
           }
           let token = jwt.sign(payload, process.env.SECRETKEY)
           res.status(200).json({
             message: 'login success',
             id: data.id,
             email: data.email,
+            name: data.name, 
             token: token,
           })
           //   console.log(process.env.SECRETKEY+' ini secrfet');

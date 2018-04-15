@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
     getAll : function(req,res){
+      
       Todo.find({
         user : req.decoded.id
       })
@@ -35,9 +36,11 @@ module.exports = {
     },
   
     add : function(req,res){
+      console.log('masuk sini'+req.body.datetask);
+      console.log('masuk sini lagi'+req.body.task);
       let newTodo = new Todo({
         task : req.body.task,
-        status : req.body.status,
+        status : 'false',
         datetask : req.body.datetask,
         user : req.decoded.id
       })

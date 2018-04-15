@@ -6,7 +6,6 @@ new Vue({
   data: function () {
     return {
       title: 'Sign Up',
-
       name: '',
       email: '',
       password: '',

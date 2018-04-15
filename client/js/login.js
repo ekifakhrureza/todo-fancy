@@ -2,7 +2,7 @@
 Vue.use(VeeValidate);
 
 new Vue({
-  el: '#app',
+  el: '#applogin',
   data: function () {
     return {
       name: '',
@@ -12,6 +12,9 @@ new Vue({
     }
   },
   created() {
+    if (localStorage.getItem('token') !== null) {
+      window.location.href = 'index.html';
+    }
     VeeValidate.Validator.extend('verify_password', {
       getMessage: field => `The password should contain number`,
       validate: value => {
@@ -31,9 +34,7 @@ new Vue({
     },
   
     login(){
-      console.log('masuk login');
-      console.log(this.email);
-      
+
       let email = this.email;
       let password = this.password;
       axios.post('http://localhost:3000/users/login', {
@@ -41,12 +42,12 @@ new Vue({
         password: password
       })
         .then((data) => {
-          console.log('masuk then gak yaaa');
           
           if (data.status === 202) {
-            alert('Wrong username/password')
+            alert('Wrong email/password')
           }
           else {
+            localStorage.setItem('name', data.data.name)
             localStorage.setItem('token', data.data.token)
             window.location.href = 'index.html';
           }
@@ -54,18 +55,19 @@ new Vue({
 
         })
         .catch(err => {
-          //    alert('Connection problem')
+             alert('Connection problem')
           console.log(err);
         })
     },
     logout() {
       console.log('masuk logout');
-      
+      localStorage.removeItem('name')
       localStorage.removeItem('token');
       window.location.href = 'login.html'
       this.checkToken = null
 
     },
+    
   },
 
 })
