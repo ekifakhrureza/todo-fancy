@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - To Do Fancy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0="
+        crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.0/css/bulma.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+
+    <section class="hero is-success is-fullheight">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <div class="column is-4 is-offset-4">
+                    <h3 class="title has-text-grey">Login</h3>
+                    <p class="subtitle has-text-grey">Please login to manage your task.</p>
+                    <div class="box">
+                        <div id="app">
+                            <form v-on:submit.prevent="onSubmit">
+                                <div class="field">
+
+                                    <div class="control">
+                                        <label class="label" for="formEmail">Email:</label>
+                                        <input type="email" name="email" id="formEmail2" v-model="email" v-validate="'required|email|max:50'" v-bind:class="{'form-control': true, 'error': errors.has('email') }">
+                                    </div>
+                                    <div class="control">
+                                        <span v-show="errors.has('email')" class="text-danger">{{ errors.first('email') }}</span>
+                                    </div>
+
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        <label class="label" for="formPassword">Password:</label>
+                                        <input type="password" name="password" id="formPassword2" v-model="password" v-validate="'required'" v-bind:class="{'form-control': true, 'error': errors.has('password') }">
+                                    </div>
+                                    <div class="control">
+                                        <span v-show="errors.has('password')" class="text-danger">{{ errors.first('password') }}</span>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div id="fb-root"></div>
+                                    <script>(function (d, s, id) {
+                                            var js, fjs = d.getElementsByTagName(s)[0];
+                                            if (d.getElementById(id)) return;
+                                            js = d.createElement(s); js.id = id;
+                                            js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.12&appId=192033271411169&autoLogAppEvents=1';
+                                            fjs.parentNode.insertBefore(js, fjs);
+                                        }(document, 'script', 'facebook-jssdk'));</script>
+                                    <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false"
+                                        data-use-continue-as="false"></div>
+
+                                </div>
+                                <button class="button is-block is-info is-fullwidth" @click="login()">Login</button>
+                            </form>
+                        </div>
+                    </div>
+                    <p class="has-text-grey">
+                        <button id="myBtn" class="button is-warning">
+                            Sign Up
+                        </button>
+
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+            <button id="delete" class="delete is-large"></button>
+            <!-- Modal content -->
+            <div class="container has-text-centered">
+                <div class="column is-4 is-offset-4">
+
+                    <div class="box">
+                        <div class="col-md-offset-4 col-md-4">
+                            <div id="appreg">
+
+                                <h1 class="title text-center">
+                                    {{title}}
+                                </h1>
+
+
+                                <form v-on:submit.prevent="onSubmit"></form>
+                                <div class="field">
+                                    <div class="control">
+                                        <label class="label" for="formEmail">Email:</label>
+                                        <input type="email" name="email" id="formEmail" v-model="email" v-validate="'required|email|max:50'" v-bind:class="{'form-control': true, 'error': errors.has('email') }">
+                                    </div>
+                                    <div class="control">
+                                        <span v-show="errors.has('email')" class="text-danger">{{ errors.first('email') }}</span>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        <label class="label" for="formName">Full Name:</label>
+
+                                        <input type="text" name="name" id="formName" v-model="name" v-validate="'required|max:50'" v-bind:class="{'form-control': true, 'error': errors.has('name') }">
+                                    </div>
+                                    <div class="control">
+                                        <span v-show="errors.has('name')" class="text-danger">{{ errors.first('name') }}</span>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        <label class="label" for="formPassword">Password:</label>
+                                        <input type="password" name="password" id="formPassword" v-model="password" v-validate="'required|min:6|verify_password|max:15'"
+                                            v-bind:class="{'form-control': true, 'error': errors.has('password') }">
+                                    </div>
+                                    <div class="control">
+                                        <span v-show="errors.has('password')" class="text-danger">{{ errors.first('password') }}</span>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        <label class="label" for="formConPassword">Confirm Password:</label>
+                                        <input type="password" name="confirmation_password" id="formConPassword" v-model="confirmation_password" v-validate="'required|confirmed:password'"
+                                            v-bind:class="{'form-control': true, 'error': errors.has('confirmation_password') }">
+                                    </div>
+                                    <div class="control">
+                                        <span v-show="errors.has('confirmation_password')" class="text-danger">{{ errors.first('confirmation_password') }}</span>
+                                    </div>
+                                </div>
+
+
+                                <button id="myBtn" class="button is-info" @click="register()">
+                                    Submit
+                                </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+    <!-- Trigger/Open The Modal -->
+
+    <script>
+
+        window.onload = function () {
+            isAuth()
+
+        }
+        function isAuth() {
+            // console.log('check token jalan');
+            let token = localStorage.getItem('token')
+            if (token) {
+                window.location.replace('index.html')
+            }
+        }
+
+
+        // Get the modal
+        var modal = document.getElementById('myModal');
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementById("delete");
+
+        // When the user clicks on the button, open the modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
+    <script src="./js/login.js"></script>
+    <script src="./js/register.js"></script>
+</body>
+
+
+
+</html>
