@@ -1,5 +1,7 @@
+const createError = require('http-errors');
 const express = require('express');
 const app = express();
+const favicon = require('serve-favicon')
 const logger = require('morgan')
 const cors = require('cors')
 const path = require('path');
@@ -20,7 +22,7 @@ const { auth } = require('./middlewares/auth');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(logger('dev'));
-
+app.use(cors())
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
