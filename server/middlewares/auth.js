@@ -8,7 +8,7 @@ module.exports = {
         req.decoded = decoded
         next();
       } catch(err) {
-        res.status(403).json({
+        res.status(400).json({
           message: "Bad Authentication"
         });
       }

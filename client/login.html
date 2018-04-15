@@ -17,7 +17,7 @@
 
 <body>
 
-
+    
     <section class="hero is-success is-fullheight">
         <div class="hero-body">
             <div class="container has-text-centered">
@@ -25,7 +25,7 @@
                     <h3 class="title has-text-grey">Login</h3>
                     <p class="subtitle has-text-grey">Please login to manage your task.</p>
                     <div class="box">
-                        <div id="app">
+                        <div id="applogin">
                             <form v-on:submit.prevent="onSubmit">
                                 <div class="field">
 
@@ -133,7 +133,7 @@
                                 </div>
 
 
-                                <button id="myBtn" class="button is-info" @click="register()">
+                                <button class="button is-info" @click="register()">
                                     Submit
                                 </button>
                                 </form>
@@ -150,19 +150,7 @@
 
     <script>
 
-        window.onload = function () {
-            isAuth()
-
-        }
-        function isAuth() {
-            // console.log('check token jalan');
-            let token = localStorage.getItem('token')
-            if (token) {
-                window.location.replace('index.html')
-            }
-        }
-
-
+    
         // Get the modal
         var modal = document.getElementById('myModal');
 

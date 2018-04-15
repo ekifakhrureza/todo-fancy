@@ -6,12 +6,14 @@ const bcrypt = require('bcrypt')
 const todoSchema = new Schema({
     task : {
         type : String,
+        required : [true,'task cannot be empty'],
     },
     status : {
         type : Boolean,
     },
     datetask : {
-        type : Date,
+        type : String,
+        required : [true,'task cannot be empty'],
     },
     user: {
         type: Schema.Types.ObjectId,
@@ -20,8 +22,6 @@ const todoSchema = new Schema({
 },{
     timestamps: true
 })
-
-
 
 let Todo = mongoose.model('Todos', todoSchema)
 
