@@ -10,9 +10,9 @@ new Vue({
         return {
             token: '',
             name: '',
-            todos: [],
-            task: '',
-            datetask: ''
+            upcomingTodos: [],
+            overdueTodos: [],
+          
         }
     },
     methods: {
@@ -23,53 +23,71 @@ new Vue({
                 console.log('errors exist', this.errors)
             });
         },
-        add() {
-            let task = this.task
-            let datetask = this.datetask
-            instance.post('/todos/add', {
-                task: task,
-                datetask: datetask
-            }).then((response) => {
-                window.location.href = 'index.html';
-            })
-        },
-       
+
         remove(id, task) {
-            console.log(id);
             
-            var answer = confirm(`Are you sure delete task "${task}"?`)
-            if (answer) {
-                instance.delete(`/todos/delete/${id}`, {})
+            let confirmation = confirm(`Are you sure delete task "${task}"?`)
+            if (confirmation) {
+                instance.delete(`/todos/delete/${id}`, {
+                    
+                })
                     .then((response) => {
-                        window.location.href = 'index.html';
+                        if(response.data.data.status===true)
+                        {
+                            let todoList = this.overdueTodos.filter(list=>
+                                list._id !=`${id}`      
+                            )
+                            this.overdueTodos = todoList
+                          
+                        }
+                        else{
+                            let todoList = this.upcomingTodos.filter(list=>
+                                list._id !=`${id}`      
+                            )
+                            this.upcomingTodos = todoList
+                        }      
+                        
                     })
             }
         },
-       
+        logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('name');
+            window.location.href = 'login.html'
+        }
     },
 
-    created () {
+    created() {
+    
         if (localStorage.getItem('token') === null) {
             window.location.href = 'login.html';
         } else {
             this.token = localStorage.getItem('token');
-            axios.get('http://localhost:3000/todos', {
+            axios.get('http://localhost:3000/todos/upcoming', {
                 headers: { token: this.token }
             })
                 .then((response) => {
 
-
                     response.data.data.forEach(element => {
-                        this.todos.push(element);
+                        this.upcomingTodos.push(element);
                     });
                     this.name = localStorage.getItem('name');
-
-
                 })
                 .catch(err => {
-                    console.log('malih malih');
 
                     console.log(err)
+                })
+            axios.get('http://localhost:3000/todos/overdue', {
+                headers: { token: this.token }
+            })
+                .then((response) => {
+                    response.data.data.forEach(element => {
+                        this.overdueTodos.push(element)
+                    })
+                })
+                .catch(err => {
+                    console.log(err);
+
                 })
         }
     }

@@ -89,8 +89,6 @@
                                 <h1 class="title text-center">
                                     {{title}}
                                 </h1>
-
-
                                 <form v-on:submit.prevent="onSubmit"></form>
                                 <div class="field">
                                     <div class="control">
@@ -131,8 +129,6 @@
                                         <span v-show="errors.has('confirmation_password')" class="text-danger">{{ errors.first('confirmation_password') }}</span>
                                     </div>
                                 </div>
-
-
                                 <button class="button is-info" @click="register()">
                                     Submit
                                 </button>

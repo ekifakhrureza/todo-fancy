@@ -10,8 +10,6 @@ new Vue({
       email: '',
       password: '',
       confirmation_password: ''
-
-
     }
   },
   created() {
