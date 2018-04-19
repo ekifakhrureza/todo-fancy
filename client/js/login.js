@@ -49,6 +49,7 @@ new Vue({
           else {
             localStorage.setItem('name', data.data.name)
             localStorage.setItem('token', data.data.token)
+            localStorage.setItem('username', data.data.email)
             window.location.href = 'index.html';
           }
 
@@ -61,8 +62,9 @@ new Vue({
     },
     logout() {
       console.log('masuk logout');
-      localStorage.removeItem('name')
-      localStorage.removeItem('token');
+      localStorage.setItem('name', data.data.name)
+      localStorage.setItem('token', data.data.token)
+      localStorage.setItem('username', data.data.email)
       window.location.href = 'login.html'
       this.checkToken = null
 

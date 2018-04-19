@@ -12,7 +12,9 @@ new Vue({
             name: '',
             upcomingTodos: [],
             overdueTodos: [],
-          
+            task: '',
+            datetask: '',
+
         }
     },
     methods: {
@@ -25,28 +27,27 @@ new Vue({
         },
 
         remove(id, task) {
-            
+
             let confirmation = confirm(`Are you sure delete task "${task}"?`)
             if (confirmation) {
                 instance.delete(`/todos/delete/${id}`, {
-                    
+
                 })
                     .then((response) => {
-                        if(response.data.data.status===true)
-                        {
-                            let todoList = this.overdueTodos.filter(list=>
-                                list._id !=`${id}`      
+                        if (response.data.data.status === true) {
+                            let todoList = this.overdueTodos.filter(list =>
+                                list._id != `${id}`
                             )
                             this.overdueTodos = todoList
-                          
+
                         }
-                        else{
-                            let todoList = this.upcomingTodos.filter(list=>
-                                list._id !=`${id}`      
+                        else {
+                            let todoList = this.upcomingTodos.filter(list =>
+                                list._id != `${id}`
                             )
                             this.upcomingTodos = todoList
-                        }      
-                        
+                        }
+
                     })
             }
         },
@@ -54,16 +55,16 @@ new Vue({
             localStorage.removeItem('token');
             localStorage.removeItem('name');
             window.location.href = 'login.html'
-        }
+        },
     },
 
     created() {
-    
+
         if (localStorage.getItem('token') === null) {
             window.location.href = 'login.html';
         } else {
             this.token = localStorage.getItem('token');
-            axios.get('http://localhost:3000/todos/upcoming', {
+            instance.get('/todos/upcoming', {
                 headers: { token: this.token }
             })
                 .then((response) => {
@@ -77,7 +78,7 @@ new Vue({
 
                     console.log(err)
                 })
-            axios.get('http://localhost:3000/todos/overdue', {
+            instance.get('/todos/overdue', {
                 headers: { token: this.token }
             })
                 .then((response) => {

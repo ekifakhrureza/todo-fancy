@@ -57,7 +57,7 @@ module.exports = {
   },
 
   add: function (req, res) {
-    
+    console.log('asasa');
     let today = new Date().toISOString().slice(0, 10)
     let parseDateNow = Date.parse(today)
     let stringTemp = req.body.datetask

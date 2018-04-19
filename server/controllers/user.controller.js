@@ -1,6 +1,7 @@
 const User = require('../models/user.model')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
+const nodemailer = require('nodemailer')
 // const saltRounds = 10
 // const salt = bcrypt.genSaltSync(saltRounds)
 
@@ -14,17 +15,12 @@ module.exports = {
           message: 'Email Already Exist'
         })
       }
-      else {
-        res.status(200).json({
-          message: 'Email not found'
-        })
-      }
+      
     }).catch(err => {
       console.log(err);
 
     })
-
-    // let hash = bcrypt.hashSync(req.body.password,salt)
+    
     let newUser = new User({
       email: req.body.email,
       name: req.body.name,
@@ -32,10 +28,20 @@ module.exports = {
     })
     newUser.save()
       .then(response => {
-
+ 
+        let payload = {
+          id: response._id,
+          email: response.email,
+          name: response.name,
+        }
+        let token = jwt.sign(payload, process.env.SECRETKEY)
+ 
         res.status(200).json({
           message: 'register success',
-          data: response
+          id: response._id,
+          email: response.email,
+          name: response.name,
+          token: token,
         })
       }).catch(err => {
         console.log('error kali');
@@ -49,7 +55,7 @@ module.exports = {
 
   login: function (req, res) {
     console.log('masuk server');
-    
+
     User.findOne({
       email: req.body.email
     }).then(data => {
@@ -67,7 +73,7 @@ module.exports = {
             message: 'login success',
             id: data.id,
             email: data.email,
-            name: data.name, 
+            name: data.name,
             token: token,
           })
           //   console.log(process.env.SECRETKEY+' ini secrfet');
