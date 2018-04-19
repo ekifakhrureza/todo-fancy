@@ -14,9 +14,39 @@
 </head>
 
 <body>
-    <div id="app">
 
-        <navbar-component :token='token' :name='name'></navbar-component>
+    <div id="app">
+        <nav class="navbar is-transparent">
+            <div class="navbar-brand">
+                <a class="navbar-item">
+                    Home
+                </a>
+                <div id="navbar-burger-id" class="navbar-burger burger" data-target="navbarExampleTransparentExample">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <div id="navbarExampleTransparentExample" class="navbar-menu">
+                <div class="navbar-start">
+                </div>
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="field is-grouped">
+                            <p class="control">
+                                Welcome {{name}}
+                            </p>
+
+                            <p class="control">
+                                <a class="button is-success is-rounded" @click="logout()">Log Out</a>
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
         <section class="hero is-light">
             <div class="hero-body">
@@ -32,109 +62,91 @@
         </section>
 
         <div class="control container">
-            <p class="subtitle is-4">To Do List :</p>
-            <table class="table">
-                <thead>
 
-                    <tr>
-                        <th>
-                            <abbr title="No">No.</abbr>
-                        </th>
-                        <th>
-                            <abbr title="Task">Task</abbr>
-                        </th>
-                        <th>
-                            <abbr title="Schedule">Schedule</abbr>
-                        </th>
-                       
+            <div class="columns is-desktop is-tablet">
+                <div class="column">
+                    <p class="subtitle is-4">UPCOMING</p>
+                    <table class="table is-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <abbr title="No">No.</abbr>
+                                </th>
+                                <th>
+                                    <abbr title="Task">Task</abbr>
+                                </th>
+                                <th>
+                                    <abbr title="Schedule">Schedule</abbr>
+                                </th>
+                                <th>
+                                    <abbr title="Remove">Delete</abbr>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="upcomingTodo,index in upcomingTodos" style="width : 50px">
 
-                        <th>
-                            <abbr title="Remove">Delete</abbr>
-                        </th>
-                    </tr>
-                </thead>
-               
-                <tbody>
-                    <tr v-for="todo in todos" v-for="n in 1" class="is-selected">
-                        
-                        <td>{{ n }}</td>
-                        <td>
-                            <a id="myBtn">{{todo.task}}</a>
-                        </td>
-                        <td>{{todo.datetask}}</td>
-                     
-                        <td @click="remove(todo._id,todo.task)">
-                       
-                            <i class="fas fa-trash-alt"></i>
-                        </td>
+                                <td>{{ index+1 }}</td>
 
-                    </tr>
+                                <td style="max-width:100px; word-wrap:break-word;">
+                                    {{upcomingTodo.task}}
+                                </td>
+                                <td>{{upcomingTodo.datetask}}</td>
 
-                    
+                                <td @click="remove(upcomingTodo._id,upcomingTodo.task)">
 
-                </tbody>
-            </table>
-            <form v-on:submit.prevent="onSubmit">
-                <div class="field">
-                    <label class="label">Task</label>
-                    <div class="control">
-                        <input v-model="task" v-validate="'required'" class="input" type="text" placeholder="Input Your Task Here" name="task" v-bind:class="{'form-control': true, 'error': errors.has('task') }">
+                                    <i class="fas fa-trash-alt"></i>
+                                </td>
 
-                    </div>
-                    <div class="control">
-                        <span v-show="errors.has('task')" class="text-danger">{{ errors.first('task') }}</span>
-                    </div>
-                    <label class="label">Schedule</label>
-                    <div class="control">
-
-                        <input v-model="datetask" v-validate="'required'" class="input" type="date" placeholder="Click To Show Calendar" name="datetask"
-                            v-bind:class="{'form-control': true, 'error': errors.has('task') }">
-                    </div>
-                    <div class="control">
-                        <span v-show="errors.has('datetask')" class="text-danger">{{ errors.first('datetask') }}</span>
-                    </div>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <button class="button is-link" @click="add()">Submit</button>
-            </form>
+                <div class="column">
+                    <p class="subtitle is-4">Overdue</p>
+                    <table class="table is-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <abbr title="No">No.</abbr>
+                                </th>
+                                <th>
+                                    <abbr title="Task">Task</abbr>
+                                </th>
+                                <th>
+                                    <abbr title="Schedule">Schedule</abbr>
+                                </th>
+                                <th>
+                                    <abbr title="Remove">Delete</abbr>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="overdueTodo,index in overdueTodos" style="width : 50px">
 
-            <div id="myModal" class="modal">
-                <button id="delete" class="delete is-large"></button>
-                <form v-on:submit.prevent="onSubmit">
-                    <div class="field">
-                        <label class="label">Task</label>
-                        <div class="control">
-                            <input v-model="task" v-validate="'required'" class="input" type="text" placeholder="Input Your Task Here" name="task" v-bind:class="{'form-control': true, 'error': errors.has('task') }">
+                                <td>{{ index+1 }}</td>
+                                <td style="max-width:100px; word-wrap:break-word;">
+                                    {{overdueTodo.task}}
+                                </td>
+                                <td>{{overdueTodo.datetask}}</td>
 
-                        </div>
-                        <div class="control">
-                            <span v-show="errors.has('task')" class="text-danger">{{ errors.first('task') }}</span>
-                        </div>
-                        <label class="label">Schedule</label>
-                        <div class="control">
+                                <td @click="remove(overdueTodo._id,overdueTodo.task)">
 
-                            <input v-model="datetask" v-validate="'required'" class="input" type="date" placeholder="Click To Show Calendar" name="datetask"
-                                v-bind:class="{'form-control': true, 'error': errors.has('task') }">
-                        </div>
-                        <div class="control">
-                            <span v-show="errors.has('datetask')" class="text-danger">{{ errors.first('datetask') }}</span>
-                        </div>
-                    </div>
-                    <button class="button is-link" @click="add()">Submit</button>
-                </form>
+                                    <i class="fas fa-trash-alt"></i>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
-            <!-- <template>
-                <datepicker placeholder="European Format ('d-m-Y')" :config="{ dateFormat: 'd-m-Y', static: true }"></datepicker>
-            </template>
 
-            <script>
-                import Datepicker from 'vue-bulma-datepicker'
-
-                export default {
-                    components: {
-                        Datepicker
-                    }
-                }
-            </script> -->
+            <form v-on:submit.prevent="onSubmit">
+                
+                <create-todo-component :overduetodos="overdueTodos" :upcomingtodos="upcomingTodos"></create-todo-component>
+       
+            </form>
 
         </div>
         <footer-component></footer-component>
@@ -153,8 +165,8 @@
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
 <script src="./js/index.js"></script>
-<script src="./js/navbar.js"></script>
 <script src="./js/footer.js"></script>
+<script src="./js/create-todo.js"></script>
 <script>
     $('.navbar-item').each(function (e) {
         $(this).click(function () {
@@ -175,32 +187,6 @@
             $('#navbarExampleTransparentExample').addClass('is-active');
         }
     });
-
-    // Get the modal
-    var modal = document.getElementById('myModal');
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementById("delete");
-
-    // When the user clicks on the button, open the modal
-    btn.onclick = function () {
-        modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
 
 </script>
 

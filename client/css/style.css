@@ -6,11 +6,16 @@
 }
 
 
-
+.table__wrapper {
+    overflow-x: auto;
+  }
+  
 .hero.is-success .title {
     color: #000;
 }
-
+a.myBtn {
+    color: black;
+}
 
  /* The Modal (background) */
  .modal {

@@ -2,94 +2,125 @@ const Todo = require('../models/todo.model')
 const jwt = require('jsonwebtoken')
 
 module.exports = {
-    getAll : function(req,res){
-      
-      Todo.find({
-        user : req.decoded.id
-      })
-        .exec()
-        .then(response=>{
+  getAllUpcoming: function (req, res) {
+    console.log('asupp euyyy');
+    
+    Todo.find({
+      user: req.decoded.id,
+      status: false
+    })
+      .exec()
+      .then(response => {
         res.status(200).json({
-          message : 'success get data',
-          data : response
+          message: 'success get data',
+          data: response
         })
-      }).catch(err=>{
+      }).catch(err => {
         res.status(500).json({
-          message : 'get data failed',
+          message: 'get data failed',
           err
         })
       })
-    },
-  
-    getOne : function(req,res){
-      Todo.findById(req.params.id).exec().then(response=>{
+  },
+  getAllOverdue: function (req, res) {
+
+    Todo.find({
+      user: req.decoded.id,
+      status: true
+    })
+      .exec()
+      .then(response => {
         res.status(200).json({
-          message : 'success get data by id',
-          data : response
+          message: 'success get data',
+          data: response
         })
-      }).catch(err=>{
+      }).catch(err => {
         res.status(500).json({
-          message : 'get data by id failed',
+          message: 'get data failed',
           err
         })
       })
-    },
-  
-    add : function(req,res){
-      console.log('masuk sini'+req.body.datetask);
-      console.log('masuk sini lagi'+req.body.task);
-      let newTodo = new Todo({
-        task : req.body.task,
-        status : 'false',
-        datetask : req.body.datetask,
-        user : req.decoded.id
+  },
+
+  getOne: function (req, res) {
+    Todo.findById(req.params.id).exec().then(response => {
+      res.status(200).json({
+        message: 'success get data by id',
+        data: response
       })
-  
-      newTodo.save().then(response=>{
-        res.status(200).json({
-          message : 'success insert data',
-          data : response
-        })
-      }).catch(err=>{
-        res.status(500).json({
-          message : 'insert error',
-          err
-        })
+    }).catch(err => {
+      res.status(500).json({
+        message: 'get data by id failed',
+        err
       })
-    },
-  
-  
-    remove : function(req,res){
-      Todo.findByIdAndRemove(req.params.id).then(response=>{
-        res.status(200).json({
-          message : 'delete success',
-          data : response
-        })
-      }).catch(err=>{
-        res.status(500).json({
-          message : 'delete error',
-          err
-        })
-      })
-    },
-  
-    update : function(req,res){
-      Todo.update({_id:req.params.id}, {
-        task : req.body.task,
-        status : req.body.status,
-        datetask : req.body.datetask,
-      }).then(response=>{
-        res.status(200).json({
-          message : 'update success',
-          data : response
-        })
-      }).catch(err=>{
-        res.status(500).json({
-          message : 'update error',
-          err
-        })
-      })
-  
+    })
+  },
+
+  add: function (req, res) {
+    
+    let today = new Date().toISOString().slice(0, 10)
+    let parseDateNow = Date.parse(today)
+    let stringTemp = req.body.datetask
+    let convertDate = Date.parse(stringTemp)
+    if(parseDateNow<=convertDate){
+      status=false
     }
+    else{
+      status=true
+    }
+
+    let newTodo = new Todo({
+      task: req.body.task,
+      status: status,
+      datetask: req.body.datetask,
+      user: req.decoded.id
+    })
+
+    newTodo.save().then(response => {
+      res.status(200).json({
+        message: 'success insert data',
+        data: response
+      })
+    }).catch(err => {
+      res.status(500).json({
+        message: 'insert error',
+        err
+      })
+    })
+  },
+
+
+  remove: function (req, res) {
+    Todo.findByIdAndRemove(req.params.id).then(response => {
+      res.status(200).json({
+        message: 'delete success',
+        data: response
+      })
+    }).catch(err => {
+      res.status(500).json({
+        message: 'delete error',
+        err
+      })
+    })
+  },
+
+  update: function (req, res) {
+    Todo.update({ _id: req.params.id }, {
+      task: req.body.task,
+      status: req.body.status,
+      datetask: req.body.datetask,
+    }).then(response => {
+      res.status(200).json({
+        message: 'update success',
+        data: response
+      })
+    }).catch(err => {
+      res.status(500).json({
+        message: 'update error',
+        err
+      })
+    })
+
+  }
 
 }
