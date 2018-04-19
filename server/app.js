@@ -9,7 +9,11 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config()
 const bodyParser = require('body-parser')
 const mongoose =require ('mongoose')
-mongoose.connect('mongodb://localhost/db_todo_fancy');
+
+mongoose.connect(`mongodb://ekidb:admin123@ds247759.mlab.com:47759/db_todo_fancy`, ()=>{
+console.log('db connect');
+
+})
 
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
@@ -17,8 +21,9 @@ app.use(bodyParser.json())
 const index = require('./routes/index')
 const users = require('./routes/users')
 const todos = require('./routes/todos')
-const { auth } = require('./middlewares/auth');
-// view engine setup
+const { auth } = require('./middlewares/auth')
+
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(logger('dev'));

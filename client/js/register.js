@@ -16,7 +16,6 @@ new Vue({
     VeeValidate.Validator.extend('verify_password', {
       getMessage: field => `The password should contain number`,
       validate: value => {
-        // var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
         var strongRegex = new RegExp(/\d/);
         return strongRegex.test(value);
       }
@@ -42,12 +41,14 @@ new Vue({
       })
         .then((data) => {
           if(data.status===202){
-            console.log('masuk error');
             alert('Email Already Exist') 
          }
          else{
-            console.log('masuk gak yaaa?');
+            alert('Check your email to see our message')
+            localStorage.setItem('name', data.data.name)
             localStorage.setItem('token', data.data.token)
+            localStorage.setItem('username', data.data.email)
+ 
             window.location.href = 'index.html';
          }
 
