@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.0/css/bulma.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-calendar@0.2.0/bulma-calendar.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl"
+        crossorigin="anonymous"></script>
+    <title>To Do Fancy</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <nav class="navbar is-transparent">
+            <div class="navbar-brand">
+                <a class="navbar-item">
+                    Home
+                </a>
+                <div id="navbar-burger-id" class="navbar-burger burger" data-target="navbarExampleTransparentExample">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <div id="navbarExampleTransparentExample" class="navbar-menu">
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="field is-grouped">
+                            <p class="control">
+                                Welcome, {{name}}
+                            </p>
+
+                            <p class="control">
+                                <a class="button is-success is-rounded" @click="logout()">Log Out</a>
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero is-light">
+            <div class="hero-body">
+                <div class="container">
+                    <h1 class="title">
+                        ToDo Fancy
+                    </h1>
+                    <h2 class="subtitle">
+                        Plan What To Do
+                    </h2>
+                </div>
+                
+            </div>
+        </section>
+
+        <div class="control container">
+
+            <div class="columns is-desktop is-tablet">
+                <div class="column">
+                    <p class="subtitle is-4">UPCOMING</p>
+                    <table class="table is-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <abbr title="No">No.</abbr>
+                                </th>
+                                <th>
+                                    <abbr title="Task">Task</abbr>
+                                </th>
+                                <th>
+                                    <abbr title="Schedule">Schedule</abbr>
+                                </th>
+                                <th>
+                                    <abbr title="Remove">Delete</abbr>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="upcomingTodo,index in upcomingTodos" style="width : 50px">
+
+                                <td>{{ index+1 }}</td>
+
+                                <td style="max-width:100px; word-wrap:break-word;">
+                                    {{upcomingTodo.task}}
+                                </td>
+                                <td>{{upcomingTodo.datetask}}</td>
+
+                                <td @click="remove(upcomingTodo._id,upcomingTodo.task)">
+
+                                    <i class="fas fa-trash-alt"></i>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="column">
+                    <p class="subtitle is-4">OVERDUE</p>
+                    <table class="table is-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <abbr title="No">No.</abbr>
+                                </th>
+                                <th>
+                                    <abbr title="Task">Task</abbr>
+                                </th>
+                                <th>
+                                    <abbr title="Schedule">Schedule</abbr>
+                                </th>
+                                <th>
+                                    <abbr title="Remove">Delete</abbr>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="overdueTodo,index in overdueTodos" style="width : 50px">
+
+                                <td>{{ index+1 }}</td>
+                                <td style="max-width:100px; word-wrap:break-word;">
+                                    {{overdueTodo.task}}
+                                </td>
+                                <td>{{overdueTodo.datetask}}</td>
+
+                                <td @click="remove(overdueTodo._id,overdueTodo.task)">
+
+                                    <i class="fas fa-trash-alt"></i>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <form v-on:submit.prevent="onSubmit">
+                
+                <create-todo-component :overduetodos="overdueTodos" :upcomingtodos="upcomingTodos"></create-todo-component>
+       
+            </form>
+
+        </div>
+        <footer-component></footer-component>
+    </div>
+
+</body>
+<!-- Compressed CSS -->
+
+<!-- Compressed JavaScript -->
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
+<script src="./js/index.js"></script>
+<script src="./js/footer.js"></script>
+<script src="./js/create-todo.js"></script>
+<script>
+    $('.navbar-item').each(function (e) {
+        $(this).click(function () {
+            if ($('#navbar-burger-id').hasClass('is-active')) {
+                $('#navbar-burger-id').removeClass('is-active');
+                $('#navbarExampleTransparentExample').removeClass('is-active');
+            }
+        });
+    });
+
+    // Open or Close mobile & tablet menu
+    $('#navbar-burger-id').click(function () {
+        if ($('#navbar-burger-id').hasClass('is-active')) {
+            $('#navbar-burger-id').removeClass('is-active');
+            $('#navbarExampleTransparentExample').removeClass('is-active');
+        } else {
+            $('#navbar-burger-id').addClass('is-active');
+            $('#navbarExampleTransparentExample').addClass('is-active');
+        }
+    });
+
+</script>
+
+</html>
