@@ -9,7 +9,6 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config()
 const bodyParser = require('body-parser')
 const mongoose =require ('mongoose')
-
 mongoose.connect(`mongodb://ekidb:admin123@ds247759.mlab.com:47759/db_todo_fancy`, ()=>{
 console.log('db connect');
 

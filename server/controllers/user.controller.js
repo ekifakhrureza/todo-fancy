@@ -43,6 +43,35 @@ module.exports = {
           name: response.name,
           token: token,
         })
+        nodemailer.createTestAccount((err, account) => {
+          let transporter = nodemailer.createTransport({
+              host: 'smtp.gmail.com',
+              port: 465,
+              secure: true, // true for 465, false for other ports
+              auth: {
+                  user: 'todofancyeki@gmail.com', // generated ethereal user
+                  pass: process.env.PASSEMAIL // generated ethereal password
+              },
+              tls: {
+                  rejectUnauthorized: false
+              }
+          });
+      
+          let mailOptions = {
+              from: '"ToDo Fancy" <youremailserviceid@gmail.com>', // sender address
+              to: response.email, // list of receivers
+              subject: 'Eki from ToDo Fancy', // Subject line
+              text: 'Welcome to ToDo Fancy - I’m so glad you decided to try out ToDo Fancy.', // plain text body
+          };
+      
+          transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                  return console.log(error);
+              }
+              console.log('Message sent: %s', info.messageId);
+              console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+          });
+      });
       }).catch(err => {
         console.log('error kali');
         console.log(err);
