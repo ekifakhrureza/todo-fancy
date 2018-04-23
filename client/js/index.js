@@ -27,7 +27,6 @@ new Vue({
         },
 
         remove(id, task) {
-
             let confirmation = confirm(`Are you sure delete task "${task}"?`)
             if (confirmation) {
                 instance.delete(`/todos/delete/${id}`, {
