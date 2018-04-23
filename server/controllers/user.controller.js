@@ -2,8 +2,6 @@ const User = require('../models/user.model')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const nodemailer = require('nodemailer')
-// const saltRounds = 10
-// const salt = bcrypt.genSaltSync(saltRounds)
 
 module.exports = {
   register: function (req, res) {
@@ -105,7 +103,6 @@ module.exports = {
             name: data.name,
             token: token,
           })
-          //   console.log(process.env.SECRETKEY+' ini secrfet');
 
         } else {
           res.status(202).json({
